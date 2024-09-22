@@ -1,0 +1,21 @@
+底盘启动
+cd /home/z/airsbot2_driver
+source install/local_setup.bash
+ros2 launch dog_control_launch dog_control_node_launch.py
+
+保留当前bash窗口，开新窗口启动下面二者
+
+lidar和imu启动
+source install/local_setup.bash
+ros2 launch airsbot2_driver_launch airsbot2_driver.launch.py 
+
+ros2 topic echo /odom
+ros2 topic echo /cmd_vel
+ros2 topic echo /odometer_data_count
+ros2 topic echo /bms_data_count
+ros2 topic echo /bytes_read
+
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.2}}" --once
+ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.2, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}"
+
+左起第一个键往上拨退出遥控模式，运行时放手刹
